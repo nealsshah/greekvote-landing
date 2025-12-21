@@ -2,35 +2,30 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
-import {
-  Check,
-  Menu,
-  X,
-  Moon,
-  Sun,
-  Star,
-  Users,
-  Calendar,
-  MessageSquare,
-  BarChart3,
-  ImageIcon,
-  Smartphone,
-} from "lucide-react"
+import { Check, Menu, X, Star, Users, Calendar, MessageSquare, BarChart3, ImageIcon, Smartphone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { useTheme } from "next-themes"
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, type CarouselApi } from "@/components/ui/carousel"
 
 export default function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const [api, setApi] = useState<CarouselApi>()
+  const [current, setCurrent] = useState(0)
+
+  const images = [
+    { src: "/emily.png", alt: "Emily" },
+    { src: "/admin.png", alt: "Admin" },
+    { src: "/voting.png", alt: "Voting" },
+    { src: "/events.png", alt: "Events" },
+    { src: "/comments.png", alt: "Comments" },
+  ]
 
   useEffect(() => {
-    setMounted(true)
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setIsScrolled(true)
@@ -43,9 +38,32 @@ export default function LandingPage() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark")
-  }
+  useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    setCurrent(api.selectedScrollSnap())
+
+    const onSelect = () => {
+      setCurrent(api.selectedScrollSnap())
+    }
+
+    api.on("select", onSelect)
+
+    const interval = setInterval(() => {
+      if (api.canScrollNext()) {
+        api.scrollNext()
+      } else {
+        api.scrollTo(0)
+      }
+    }, 4000)
+
+    return () => {
+      api.off("select", onSelect)
+      clearInterval(interval)
+    }
+  }, [api])
 
   const container = {
     hidden: { opacity: 0 },
@@ -101,12 +119,16 @@ export default function LandingPage() {
         className={`sticky top-0 z-50 w-full backdrop-blur-lg transition-all duration-300 ${isScrolled ? "bg-background/80 shadow-sm" : "bg-transparent"}`}
       >
         <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2 font-bold text-xl">
-            <div className="size-10 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
-              <span className="text-lg font-bold">GV</span>
-            </div>
-            <span>GreekVote</span>
-          </div>
+          <Link href="/" className="flex items-center gap-2 font-bold text-xl">
+            <Image
+              src="/greekvote black.png"
+              alt="GreekVote"
+              width={120}
+              height={32}
+              className="h-8 w-auto"
+              priority
+            />
+          </Link>
           <nav className="hidden md:flex gap-8">
             <Link
               href="#features"
@@ -134,10 +156,6 @@ export default function LandingPage() {
             </Link>
           </nav>
           <div className="hidden md:flex gap-4 items-center">
-            <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full">
-              {mounted && theme === "dark" ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}
-              <span className="sr-only">Toggle theme</span>
-            </Button>
             <Link
               href="#"
               className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
@@ -146,10 +164,7 @@ export default function LandingPage() {
             </Link>
             <Button className="rounded-full">Get Started</Button>
           </div>
-          <div className="flex items-center gap-4 md:hidden">
-            <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full">
-              {mounted && theme === "dark" ? <Sun className="size-[18px]" /> : <Moon className="size-[18px]" />}
-            </Button>
+          <div className="flex items-center gap-2 md:hidden">
             <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
               <span className="sr-only">Toggle menu</span>
@@ -221,10 +236,6 @@ export default function LandingPage() {
               <div className="flex items-center justify-center gap-4 mt-6 text-sm text-muted-foreground">
                 <div className="flex items-center gap-1">
                   <Check className="size-4 text-primary" />
-                  <span>Free for small chapters</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Check className="size-4 text-primary" />
                   <span>Setup in minutes</span>
                 </div>
                 <div className="flex items-center gap-1">
@@ -240,7 +251,38 @@ export default function LandingPage() {
               transition={{ duration: 0.7, delay: 0.2 }}
               className="relative mx-auto max-w-5xl"
             >
-              <div className="rounded-xl overflow-hidden shadow-2xl border border-border/40 bg-gradient-to-b from-background to-muted/20 aspect-video"></div>
+              <Carousel setApi={setApi} className="w-full">
+                <CarouselContent>
+                  {images.map((image, index) => (
+                    <CarouselItem key={index}>
+                      <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl border border-border/40">
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          fill
+                          className="object-contain bg-gradient-to-b from-background to-muted/20"
+                          priority={index === 0}
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="left-4" />
+                <CarouselNext className="right-4" />
+                <div className="flex justify-center gap-2 mt-4">
+                  {images.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => api?.scrollTo(index)}
+                      className={`h-2 rounded-full transition-all ${current === index
+                        ? "bg-primary w-8"
+                        : "bg-muted-foreground/30 w-2 hover:bg-muted-foreground/50"
+                        }`}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </Carousel>
               <div className="absolute -bottom-6 -right-6 -z-10 h-[300px] w-[300px] rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl opacity-70"></div>
               <div className="absolute -top-6 -left-6 -z-10 h-[300px] w-[300px] rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl opacity-70"></div>
             </motion.div>
@@ -364,7 +406,7 @@ export default function LandingPage() {
                   transition={{ duration: 0.5, delay: i * 0.1 }}
                   className="relative z-10 flex flex-col items-center text-center space-y-4"
                 >
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground text-xl font-bold shadow-lg">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground text-xl font-bold shadow-lg ring-4 ring-primary/20">
                     {step.step}
                   </div>
                   <h3 className="text-xl font-bold">{step.title}</h3>
@@ -648,10 +690,13 @@ export default function LandingPage() {
           <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4">
             <div className="space-y-4">
               <div className="flex items-center gap-2 font-bold text-xl">
-                <div className="size-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground">
-                  <span className="text-sm font-bold">GV</span>
-                </div>
-                <span>GreekVote</span>
+                <Image
+                  src="/greekvote black.png"
+                  alt="GreekVote"
+                  width={120}
+                  height={32}
+                  className="h-8 w-auto"
+                />
               </div>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Modern recruitment management for professional fraternities. Run fair, organized, and stress-free
