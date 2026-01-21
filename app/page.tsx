@@ -4,67 +4,15 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Check, Menu, X, Star, Users, Calendar, MessageSquare, BarChart3, ImageIcon, Smartphone } from "lucide-react"
+import { Check, Star, Users, Calendar, MessageSquare, BarChart3, ImageIcon, Smartphone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, type CarouselApi } from "@/components/ui/carousel"
+import { HeroSection } from "@/components/ui/hero-section-1"
+import { PricingCard } from "@/components/ui/pricing-card"
 
 export default function LandingPage() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [api, setApi] = useState<CarouselApi>()
-  const [current, setCurrent] = useState(0)
-
-  const images = [
-    { src: "/emily.png", alt: "Emily" },
-    { src: "/admin.png", alt: "Admin" },
-    { src: "/voting.png", alt: "Voting" },
-    { src: "/events.png", alt: "Events" },
-    { src: "/comments.png", alt: "Comments" },
-  ]
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true)
-      } else {
-        setIsScrolled(false)
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  useEffect(() => {
-    if (!api) {
-      return
-    }
-
-    setCurrent(api.selectedScrollSnap())
-
-    const onSelect = () => {
-      setCurrent(api.selectedScrollSnap())
-    }
-
-    api.on("select", onSelect)
-
-    const interval = setInterval(() => {
-      if (api.canScrollNext()) {
-        api.scrollNext()
-      } else {
-        api.scrollTo(0)
-      }
-    }, 4000)
-
-    return () => {
-      api.off("select", onSelect)
-      clearInterval(interval)
-    }
-  }, [api])
-
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -115,180 +63,8 @@ export default function LandingPage() {
 
   return (
     <div className="flex min-h-[100dvh] flex-col">
-      <header
-        className={`sticky top-0 z-50 w-full backdrop-blur-lg transition-all duration-300 ${isScrolled ? "bg-background/80 shadow-sm" : "bg-transparent"}`}
-      >
-        <div className="container flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-            <Image
-              src="/greekvote black.png"
-              alt="GreekVote"
-              width={120}
-              height={32}
-              className="h-8 w-auto"
-              priority
-            />
-          </Link>
-          <nav className="hidden md:flex gap-8">
-            <Link
-              href="#features"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Features
-            </Link>
-            <Link
-              href="#how-it-works"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              How It Works
-            </Link>
-            <Link
-              href="#testimonials"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Testimonials
-            </Link>
-            <Link
-              href="#faq"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              FAQ
-            </Link>
-          </nav>
-          <div className="hidden md:flex gap-4 items-center">
-            <Link
-              href="#"
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Log in
-            </Link>
-            <Button className="rounded-full">Get Started</Button>
-          </div>
-          <div className="flex items-center gap-2 md:hidden">
-            <Button variant="ghost" size="icon" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-              {mobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
-              <span className="sr-only">Toggle menu</span>
-            </Button>
-          </div>
-        </div>
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-16 inset-x-0 bg-background/95 backdrop-blur-lg border-b"
-          >
-            <div className="container py-4 flex flex-col gap-4">
-              <Link href="#features" className="py-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Features
-              </Link>
-              <Link href="#how-it-works" className="py-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                How It Works
-              </Link>
-              <Link href="#testimonials" className="py-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                Testimonials
-              </Link>
-              <Link href="#faq" className="py-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                FAQ
-              </Link>
-              <div className="flex flex-col gap-2 pt-2 border-t">
-                <Link href="#" className="py-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  Log in
-                </Link>
-                <Button className="rounded-full" onClick={() => setMobileMenuOpen(false)}>
-                  Get Started
-                </Button>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </header>
+      <HeroSection />
       <main className="flex-1">
-        <section className="w-full py-20 md:py-32 lg:py-40 overflow-hidden">
-          <div className="container px-4 md:px-6 relative">
-            <div className="absolute inset-0 -z-10 h-full w-full bg-white dark:bg-black bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#1f1f1f_1px,transparent_1px),linear-gradient(to_bottom,#1f1f1f_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-center max-w-4xl mx-auto mb-12"
-            >
-              <Badge className="mb-4 rounded-full px-4 py-1.5 text-sm font-medium" variant="secondary">
-                Recruitment Management Platform
-              </Badge>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-6 text-balance">
-                Fraternity Recruitment, Simplified
-              </h1>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-                GreekVote is the modern recruitment management platform for professional fraternities. Run fair,
-                organized, and stress-free recruitment with everything you need in one place.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="rounded-full h-12 px-8 text-base">
-                  Get Started
-                </Button>
-                <Button size="lg" variant="outline" className="rounded-full h-12 px-8 text-base bg-transparent">
-                  Book a Demo
-                </Button>
-              </div>
-              <div className="flex items-center justify-center gap-4 mt-6 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Check className="size-4 text-primary" />
-                  <span>Setup in minutes</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Check className="size-4 text-primary" />
-                  <span>Secure & private</span>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="relative mx-auto max-w-5xl"
-            >
-              <Carousel setApi={setApi} className="w-full">
-                <CarouselContent>
-                  {images.map((image, index) => (
-                    <CarouselItem key={index}>
-                      <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl border border-border/40">
-                        <Image
-                          src={image.src}
-                          alt={image.alt}
-                          fill
-                          className="object-contain bg-gradient-to-b from-background to-muted/20"
-                          priority={index === 0}
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-4" />
-                <CarouselNext className="right-4" />
-                <div className="flex justify-center gap-2 mt-4">
-                  {images.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => api?.scrollTo(index)}
-                      className={`h-2 rounded-full transition-all ${current === index
-                        ? "bg-primary w-8"
-                        : "bg-muted-foreground/30 w-2 hover:bg-muted-foreground/50"
-                        }`}
-                      aria-label={`Go to slide ${index + 1}`}
-                    />
-                  ))}
-                </div>
-              </Carousel>
-              <div className="absolute -bottom-6 -right-6 -z-10 h-[300px] w-[300px] rounded-full bg-gradient-to-br from-primary/20 to-accent/20 blur-3xl opacity-70"></div>
-              <div className="absolute -top-6 -left-6 -z-10 h-[300px] w-[300px] rounded-full bg-gradient-to-br from-accent/20 to-primary/20 blur-3xl opacity-70"></div>
-            </motion.div>
-          </div>
-        </section>
-
         <section className="w-full py-20 md:py-32 bg-muted/30">
           <div className="container px-4 md:px-6">
             <motion.div
@@ -469,7 +245,68 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section id="testimonials" className="w-full py-20 md:py-32 bg-muted/30">
+        <section id="pricing" className="w-full py-20 md:py-32 bg-muted/30">
+          <div className="container px-4 md:px-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col items-center justify-center space-y-4 text-center mb-12"
+            >
+              <Badge className="rounded-full px-4 py-1.5 text-sm font-medium" variant="secondary">
+                Pricing
+              </Badge>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+                Simple, Transparent Pricing
+              </h2>
+              <p className="max-w-[800px] text-muted-foreground md:text-lg leading-relaxed">
+                One price. Everything included. No tiers, no hidden fees, no confusion.
+              </p>
+            </motion.div>
+
+            <PricingCard
+              title="Per Recruitment Cycle"
+              description="Pay only when you recruit. Everything your chapter needs for a successful recruitment season."
+              price={99}
+              priceLabel="per recruitment cycle"
+              features={[
+                {
+                  title: "What's Included",
+                  items: [
+                    "Unlimited PNMs",
+                    "Unlimited voting members",
+                    "All features included",
+                    "Data persists forever",
+                  ],
+                },
+                {
+                  title: "Why Chapters Love It",
+                  items: [
+                    "~$1-2 per brother",
+                    "No feature gating",
+                    "Setup in 30 minutes",
+                    "Full data export",
+                  ],
+                },
+              ]}
+              buttonText="Start Your Recruitment"
+              onButtonClick={() => console.log("Pricing CTA clicked")}
+            />
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="text-center text-sm text-muted-foreground mt-8"
+            >
+              A cycle is created when you start a new recruitment period (e.g., "Fall 2025"). Most chapters run 1-2 cycles per year.
+            </motion.p>
+          </div>
+        </section>
+
+        <section id="testimonials" className="w-full py-20 md:py-32">
           <div className="container px-4 md:px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -717,7 +554,7 @@ export default function LandingPage() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground transition-colors">
+                  <Link href="#pricing" className="text-muted-foreground hover:text-foreground transition-colors">
                     Pricing
                   </Link>
                 </li>
