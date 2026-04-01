@@ -1,11 +1,9 @@
 "use client";
 
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion, useInView } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Check } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
+import { Check, ArrowRight } from "lucide-react";
 
 interface PricingFeature {
     title: string;
@@ -22,6 +20,15 @@ interface PricingCardProps {
     buttonText?: string;
     onButtonClick?: () => void;
 }
+
+const fadeUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (delay: number = 0) => ({
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] },
+    }),
+};
 
 export function PricingCard({
     title,
@@ -43,117 +50,100 @@ export function PricingCard({
         }
     }, [isInView, hasAnimated]);
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.1,
-                delayChildren: 0.3,
-            },
-        },
-    };
-
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: "spring",
-                stiffness: 260,
-                damping: 20,
-            },
-        },
-    };
-
-    const listItemVariants = {
-        hidden: { opacity: 0, x: -20 },
-        visible: {
-            opacity: 1,
-            x: 0,
-            transition: {
-                type: "spring",
-                stiffness: 100,
-                damping: 10,
-            },
-        },
-    };
-
     return (
         <motion.div
             ref={containerRef}
             initial="hidden"
             animate={hasAnimated ? "visible" : "hidden"}
-            variants={containerVariants}
+            className="mx-auto w-full max-w-5xl"
         >
-            <Card className="relative mx-auto w-full max-w-6xl overflow-hidden">
+            <motion.div
+                variants={fadeUp}
+                custom={0}
+                className="border border-foreground/[0.08] rounded-2xl overflow-hidden hover:border-accent/20 transition-colors duration-500"
+            >
                 <div className="flex flex-col lg:flex-row">
+                    {/* Left: Price */}
                     <motion.div
-                        className="flex flex-col justify-between p-6 lg:w-2/5 lg:p-10"
-                        variants={itemVariants}
+                        className="flex flex-col justify-between p-8 lg:w-2/5 lg:p-12"
+                        variants={fadeUp}
+                        custom={0.1}
                     >
                         <div>
-                            <CardHeader className="p-0">
-                                <div className="flex items-start justify-between">
-                                    <div>
-                                        <CardTitle className="text-3xl font-bold">{title}</CardTitle>
-                                        <CardDescription className="mt-2">{description}</CardDescription>
-                                    </div>
-                                </div>
-                            </CardHeader>
-                            <motion.div className="mt-6 space-y-4" variants={itemVariants}>
-                                <div className="flex items-baseline">
-                                    <span className="text-5xl font-extrabold">${price}</span>
-                                    {originalPrice && (
-                                        <span className="ml-2 text-xl text-muted-foreground line-through">
-                                            ${originalPrice}
-                                        </span>
-                                    )}
-                                </div>
-                                <span className="block text-sm text-muted-foreground">
-                                    {priceLabel}
-                                </span>
-                            </motion.div>
-                        </div>
-                        <motion.div className="mt-8" variants={itemVariants}>
-                            <div className="bg-foreground/10 rounded-[14px] border p-0.5">
-                                <Button className="w-full rounded-xl text-base" size="lg" onClick={onButtonClick}>
-                                    {buttonText}
-                                </Button>
+                            <span className="uppercase text-[11px] tracking-[0.2em] font-semibold text-foreground/35 block mb-3">
+                                {title}
+                            </span>
+                            <p className="text-muted-foreground text-sm leading-relaxed mb-8">
+                                {description}
+                            </p>
+
+                            <div className="flex items-baseline gap-2 mb-2">
+                                <span className="font-display text-6xl md:text-7xl tracking-tight">${price}</span>
+                                {originalPrice && (
+                                    <span className="text-xl text-muted-foreground line-through">
+                                        ${originalPrice}
+                                    </span>
+                                )}
                             </div>
+                            <span className="text-sm text-muted-foreground">
+                                {priceLabel}
+                            </span>
+                        </div>
+
+                        <motion.div className="mt-10" variants={fadeUp} custom={0.2}>
+                            <Button
+                                className="w-full bg-foreground text-background hover:bg-foreground/90 rounded-full h-12 text-sm uppercase tracking-[0.1em] font-semibold group"
+                                size="lg"
+                                onClick={onButtonClick}
+                            >
+                                <span className="flex items-center gap-2">
+                                    {buttonText}
+                                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                                </span>
+                            </Button>
                         </motion.div>
                     </motion.div>
-                    <Separator className="lg:my-6 lg:hidden" />
+
+                    {/* Vertical divider */}
+                    <div className="w-px bg-foreground/[0.06] hidden lg:block" />
+                    <div className="h-px bg-foreground/[0.06] lg:hidden" />
+
+                    {/* Right: Features */}
                     <motion.div
-                        className="bg-muted/50 p-6 lg:w-3/5 lg:p-10"
-                        variants={itemVariants}
+                        className="p-8 lg:w-3/5 lg:p-12 bg-foreground/[0.015]"
+                        variants={fadeUp}
+                        custom={0.15}
                     >
-                        <div className="space-y-6">
+                        <div className="space-y-8">
                             {features.map((feature, featureIndex) => (
                                 <div key={featureIndex}>
-                                    <h3 className="mb-4 text-lg font-semibold">{feature.title}:</h3>
+                                    <h3 className="text-xs uppercase tracking-[0.2em] font-semibold text-foreground/35 mb-5">
+                                        {feature.title}
+                                    </h3>
                                     <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
                                         {feature.items.map((item, index) => (
                                             <motion.li
                                                 key={index}
-                                                className="flex items-center"
-                                                variants={listItemVariants}
-                                                custom={index + featureIndex * feature.items.length}
+                                                className="flex items-center gap-3"
+                                                variants={fadeUp}
+                                                custom={0.2 + index * 0.05}
                                             >
-                                                <Check className="mr-2 h-4 w-4 text-primary" />
-                                                <span className="text-sm">{item}</span>
+                                                <div className="size-5 rounded-full border border-foreground/10 flex items-center justify-center flex-shrink-0">
+                                                    <Check className="size-3 text-accent" />
+                                                </div>
+                                                <span className="text-sm text-foreground/70">{item}</span>
                                             </motion.li>
                                         ))}
                                     </ul>
-                                    {featureIndex < features.length - 1 && <Separator className="my-6" />}
+                                    {featureIndex < features.length - 1 && (
+                                        <div className="h-px bg-foreground/[0.06] mt-8" />
+                                    )}
                                 </div>
                             ))}
                         </div>
                     </motion.div>
                 </div>
-            </Card>
+            </motion.div>
         </motion.div>
     );
 }
-
