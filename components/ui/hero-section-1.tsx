@@ -190,7 +190,7 @@ export function HeroSection() {
                                     <Button
                                         asChild
                                         size="lg"
-                                        className="bg-foreground text-background hover:bg-foreground/90 rounded-full h-13 px-8 text-sm uppercase tracking-[0.1em] font-semibold group"
+                                        className="bg-foreground text-background hover:bg-foreground/90 rounded-full h-14 px-8 text-sm uppercase tracking-[0.1em] font-semibold group"
                                     >
                                         <Link href="/signup" className="flex items-center gap-2">
                                             Get Started
@@ -201,7 +201,7 @@ export function HeroSection() {
                                         asChild
                                         size="lg"
                                         variant="outline"
-                                        className="rounded-full h-13 px-8 text-sm uppercase tracking-[0.1em] font-semibold border-foreground/15 hover:bg-foreground/5"
+                                        className="rounded-full h-14 px-8 text-sm uppercase tracking-[0.1em] font-semibold bg-transparent border-foreground/40 hover:bg-foreground/5"
                                     >
                                         <Link href="#">
                                             Book a Demo

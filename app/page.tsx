@@ -3,7 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { motion } from "framer-motion"
-import { Check, Star, Users, Calendar, MessageSquare, BarChart3, ImageIcon, Smartphone, ArrowRight } from "lucide-react"
+import { Users, Calendar, MessageSquare, BarChart3, ImageIcon, Smartphone, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { HeroSection } from "@/components/ui/hero-section-1"
@@ -382,121 +382,6 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ── Testimonials ── */}
-        <section id="testimonials" className="w-full py-24 md:py-40">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="mb-20 md:mb-28"
-            >
-              <motion.div variants={fadeUp} custom={0}>
-                <SectionLabel>Testimonials</SectionLabel>
-              </motion.div>
-              <motion.h2
-                variants={fadeUp}
-                custom={0.1}
-                className="font-display text-[clamp(2.25rem,5vw,4rem)] leading-[0.95] tracking-tight max-w-3xl"
-              >
-                Trusted by fraternities{' '}
-                <span className="italic text-accent">nationwide.</span>
-              </motion.h2>
-            </motion.div>
-
-            {/* Featured testimonial - large pull quote */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="mb-16"
-            >
-              <motion.blockquote
-                variants={fadeUp}
-                custom={0}
-                className="border-l-2 border-accent pl-8 md:pl-12"
-              >
-                <p className="font-display text-2xl md:text-3xl lg:text-4xl leading-[1.2] tracking-tight max-w-4xl mb-8">
-                  &ldquo;GreekVote cut our deliberation time in half and made voting fairer than ever. The Bayesian rating system eliminated the bias we used to see.&rdquo;
-                </p>
-                <footer className="flex items-center gap-4">
-                  <div className="size-10 rounded-full bg-foreground/5 border border-foreground/10 flex items-center justify-center text-sm font-semibold text-foreground/40">
-                    M
-                  </div>
-                  <div>
-                    <cite className="not-italic font-semibold text-sm">Marcus Thompson</cite>
-                    <p className="text-sm text-muted-foreground">Recruitment Chair, Alpha Chapter</p>
-                  </div>
-                </footer>
-              </motion.blockquote>
-            </motion.div>
-
-            <EditorialRule />
-
-            {/* Remaining testimonials in a grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-foreground/[0.06] mt-px">
-              {[
-                {
-                  quote: "The mobile app made it so easy for brothers to vote and comment during events. We had 100% participation for the first time ever.",
-                  author: "David Chen",
-                  role: "President, Beta Chapter",
-                },
-                {
-                  quote: "Being able to track attendance and see all candidate data in one place was a game-changer. No more lost spreadsheets or missing notes.",
-                  author: "James Rodriguez",
-                  role: "VP of Recruitment, Gamma Chapter",
-                },
-                {
-                  quote: "The anonymous commenting feature allowed brothers to give honest feedback without fear of judgment. Our discussions were more productive.",
-                  author: "Alex Johnson",
-                  role: "Active Member, Delta Chapter",
-                },
-                {
-                  quote: "Setup was incredibly easy. We imported our candidate list and were running our first vote within 30 minutes. The support team was fantastic.",
-                  author: "Michael Patel",
-                  role: "Recruitment Chair, Epsilon Chapter",
-                },
-                {
-                  quote: "The analytics dashboard helped us identify which events were most effective and make data-driven decisions about our recruitment strategy.",
-                  author: "Chris Williams",
-                  role: "President, Zeta Chapter",
-                },
-              ].map((testimonial, i) => (
-                <motion.div
-                  key={i}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <motion.div
-                    variants={fadeUp}
-                    custom={i * 0.06}
-                    className="bg-background p-8 md:p-10 h-full flex flex-col"
-                  >
-                    <div className="flex gap-0.5 mb-5">
-                      {Array(5).fill(0).map((_, j) => (
-                        <Star key={j} className="size-3.5 text-foreground/20 fill-foreground/20" />
-                      ))}
-                    </div>
-                    <p className="text-[15px] leading-relaxed mb-8 flex-grow text-foreground/70">
-                      &ldquo;{testimonial.quote}&rdquo;
-                    </p>
-                    <div className="flex items-center gap-3 mt-auto">
-                      <div className="size-8 rounded-full bg-foreground/5 border border-foreground/10 flex items-center justify-center text-xs font-semibold text-foreground/30">
-                        {testimonial.author.charAt(0)}
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold">{testimonial.author}</p>
-                        <p className="text-xs text-muted-foreground">{testimonial.role}</p>
-                      </div>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* ── FAQ ── */}
         <section id="faq" className="w-full py-24 md:py-40">
           <div className="mx-auto max-w-7xl px-6 lg:px-12">
@@ -625,7 +510,7 @@ export default function LandingPage() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-background text-foreground hover:bg-background/90 rounded-full h-13 px-8 text-sm uppercase tracking-[0.1em] font-semibold group"
+                  className="bg-background text-foreground hover:bg-background/90 rounded-full h-14 px-8 text-sm uppercase tracking-[0.1em] font-semibold group"
                 >
                   <Link href="#" className="flex items-center gap-2">
                     Get Started Now
@@ -636,7 +521,7 @@ export default function LandingPage() {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="rounded-full h-13 px-8 text-sm uppercase tracking-[0.1em] font-semibold border-background/20 text-background hover:bg-background/10 hover:text-background"
+                  className="rounded-full h-14 px-8 text-sm uppercase tracking-[0.1em] font-semibold bg-transparent border-background/60 text-background hover:bg-background/15 hover:text-background"
                 >
                   <Link href="#">
                     Book a Demo
@@ -665,60 +550,44 @@ export default function LandingPage() {
               </p>
             </div>
 
-            {[
-              {
-                title: "Product",
-                links: [
+            <div className="lg:col-span-2 lg:col-start-auto space-y-5">
+              <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground/40">Product</h4>
+              <ul className="space-y-3">
+                {[
                   { name: "Features", href: "#features" },
                   { name: "How It Works", href: "#how-it-works" },
                   { name: "Pricing", href: "#pricing" },
-                ],
-              },
-              {
-                title: "Resources",
-                links: [
-                  { name: "Documentation", href: "#" },
-                  { name: "Support", href: "#" },
                   { name: "FAQ", href: "#faq" },
-                ],
-              },
-              {
-                title: "Company",
-                links: [
-                  { name: "About", href: "#" },
-                  { name: "Contact", href: "#" },
-                  { name: "Privacy Policy", href: "#" },
-                  { name: "Terms of Service", href: "#" },
-                ],
-              },
-            ].map((section) => (
-              <div key={section.title} className="lg:col-span-2 lg:col-start-auto space-y-5">
-                <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground/40">{section.title}</h4>
-                <ul className="space-y-3">
-                  {section.links.map((link) => (
-                    <li key={link.name}>
-                      <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">
-                        {link.name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+                ].map((link) => (
+                  <li key={link.name}>
+                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="lg:col-span-2 lg:col-start-auto space-y-5">
+              <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground/40">Account</h4>
+              <ul className="space-y-3">
+                {[
+                  { name: "Log In", href: "/login" },
+                  { name: "Sign Up", href: "/signup" },
+                ].map((link) => (
+                  <li key={link.name}>
+                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
-          <div className="flex flex-col gap-4 sm:flex-row justify-between items-center border-t border-foreground/[0.06] pt-10 mt-16">
+          <div className="border-t border-foreground/[0.06] pt-10 mt-16">
             <p className="text-xs text-muted-foreground">
               &copy; {new Date().getFullYear()} GreekVote. All rights reserved.
             </p>
-            <div className="flex gap-6">
-              <Link href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors duration-300">
-                Privacy Policy
-              </Link>
-              <Link href="#" className="text-xs text-muted-foreground hover:text-foreground transition-colors duration-300">
-                Terms of Service
-              </Link>
-            </div>
           </div>
         </div>
       </footer>
