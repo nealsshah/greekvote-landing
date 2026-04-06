@@ -95,7 +95,7 @@ const HeroHeader = () => {
                                     variant="ghost"
                                     size="sm"
                                     className={cn("text-xs uppercase tracking-[0.15em] font-medium", isScrolled && 'lg:hidden')}>
-                                    <Link href="#">
+                                    <Link href="/login">
                                         <span>Log in</span>
                                     </Link>
                                 </Button>
@@ -106,7 +106,7 @@ const HeroHeader = () => {
                                         "bg-foreground text-background hover:bg-foreground/90 rounded-full text-xs uppercase tracking-[0.15em] font-medium px-5",
                                         isScrolled && 'lg:hidden'
                                     )}>
-                                    <Link href="#">
+                                    <Link href="/signup">
                                         <span>Get Started</span>
                                     </Link>
                                 </Button>
@@ -117,7 +117,7 @@ const HeroHeader = () => {
                                         "bg-foreground text-background hover:bg-foreground/90 rounded-full text-xs uppercase tracking-[0.15em] font-medium px-5",
                                         isScrolled ? 'lg:inline-flex' : 'hidden'
                                     )}>
-                                    <Link href="#">
+                                    <Link href="/signup">
                                         <span>Get Started</span>
                                     </Link>
                                 </Button>
@@ -192,7 +192,7 @@ export function HeroSection() {
                                         size="lg"
                                         className="bg-foreground text-background hover:bg-foreground/90 rounded-full h-13 px-8 text-sm uppercase tracking-[0.1em] font-semibold group"
                                     >
-                                        <Link href="#" className="flex items-center gap-2">
+                                        <Link href="/signup" className="flex items-center gap-2">
                                             Get Started
                                             <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                                         </Link>
