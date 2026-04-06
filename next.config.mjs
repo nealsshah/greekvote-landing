@@ -9,6 +9,14 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/login',
+        destination: 'https://app.greekvote.org/login',
+      },
+    ]
+  },
 }
 
 export default nextConfig
