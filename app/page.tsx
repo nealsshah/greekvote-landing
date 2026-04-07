@@ -342,7 +342,7 @@ export default function LandingPage() {
               <PricingCard
                 title="Per Recruitment Cycle"
                 description="Pay only when you recruit. Everything your chapter needs for a successful recruitment season."
-                price={99}
+                price={199}
                 priceLabel="per recruitment cycle"
                 features={[
                   {
@@ -357,7 +357,7 @@ export default function LandingPage() {
                   {
                     title: "Why Chapters Love It",
                     items: [
-                      "~$1-2 per brother",
+                      "~$2-4 per brother",
                       "No feature gating",
                       "Setup in 30 minutes",
                       "Full data export",
