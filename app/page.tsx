@@ -523,7 +523,7 @@ export default function LandingPage() {
                   variant="outline"
                   className="rounded-full h-14 px-8 text-sm uppercase tracking-[0.1em] font-semibold bg-transparent border-background/60 text-background hover:bg-background/15 hover:text-background"
                 >
-                  <Link href="#">
+                  <Link href="https://cal.com/nealsshah/30min">
                     Book a Demo
                   </Link>
                 </Button>

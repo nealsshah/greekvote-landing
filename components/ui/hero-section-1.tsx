@@ -203,7 +203,7 @@ export function HeroSection() {
                                         variant="outline"
                                         className="rounded-full h-14 px-8 text-sm uppercase tracking-[0.1em] font-semibold bg-transparent border-foreground/40 hover:bg-foreground/5"
                                     >
-                                        <Link href="#">
+                                        <Link href="https://cal.com/nealsshah/30min">
                                             Book a Demo
                                         </Link>
                                     </Button>
