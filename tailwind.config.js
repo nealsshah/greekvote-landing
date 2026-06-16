@@ -18,8 +18,8 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        display: ["var(--font-instrument-serif)", "Georgia", "serif"],
-        body: ["var(--font-plus-jakarta)", "system-ui", "sans-serif"],
+        display: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        body: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

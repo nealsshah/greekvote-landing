@@ -1,149 +1,97 @@
-"use client";
+import Link from "next/link"
+import { ArrowRight, Check } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
-import { motion, useInView } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Check, ArrowRight } from "lucide-react";
+const included = [
+    "Unlimited PNMs",
+    "Unlimited active members",
+    "Bayesian-fair voting",
+    "Anonymous & attributed comments",
+    "Round, event & attendance management",
+    "Photo gallery, CSV import / export",
+    "Mobile-first across every surface",
+    "Full data export, forever",
+]
 
-interface PricingFeature {
-    title: string;
-    items: string[];
-}
-
-interface PricingCardProps {
-    title: string;
-    description: string;
-    price: number;
-    originalPrice?: number;
-    priceLabel?: string;
-    features: PricingFeature[];
-    buttonText?: string;
-    onButtonClick?: () => void;
-}
-
-const fadeUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: (delay: number = 0) => ({
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] },
-    }),
-};
-
-export function PricingCard({
-    title,
-    description,
-    price,
-    originalPrice,
-    priceLabel = "one-time payment",
-    features,
-    buttonText = "Get Started",
-    onButtonClick,
-}: PricingCardProps) {
-    const containerRef = useRef(null);
-    const isInView = useInView(containerRef, { once: true, amount: 0.2 });
-    const [hasAnimated, setHasAnimated] = useState(false);
-
-    useEffect(() => {
-        if (isInView && !hasAnimated) {
-            setHasAnimated(true);
-        }
-    }, [isInView, hasAnimated]);
-
+export function PricingCard() {
     return (
-        <motion.div
-            ref={containerRef}
-            initial="hidden"
-            animate={hasAnimated ? "visible" : "hidden"}
-            className="mx-auto w-full max-w-5xl"
-        >
-            <motion.div
-                variants={fadeUp}
-                custom={0}
-                className="border border-foreground/[0.08] rounded-2xl overflow-hidden hover:border-accent/20 transition-colors duration-500"
-            >
-                <div className="flex flex-col lg:flex-row">
-                    {/* Left: Price */}
-                    <motion.div
-                        className="flex flex-col justify-between p-8 lg:w-2/5 lg:p-12"
-                        variants={fadeUp}
-                        custom={0.1}
-                    >
+        <div>
+            <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-[1fr_1.25fr] md:items-end">
+                <h2 className="text-balance text-[clamp(1.875rem,4.4vw,3rem)] font-semibold leading-[1.05] tracking-[-0.025em]">
+                    Pricing that survives the e-board question.
+                </h2>
+                <p className="text-pretty text-[17px] leading-[1.6] text-foreground/68">
+                    No tiers. No feature gating. No per-seat math. One flat
+                    rate per recruitment cycle — and the first one&apos;s on us.
+                </p>
+            </div>
+
+            <div className="relative mx-auto mt-12 max-w-5xl overflow-hidden rounded-xl border border-foreground/[0.1] bg-card">
+                <div className="relative px-7 pt-10 pb-9 sm:px-12 sm:pt-12 sm:pb-10">
+                    <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+                        style={{
+                            background:
+                                "linear-gradient(90deg, transparent, hsl(var(--accent) / 0.55), transparent)",
+                        }}
+                    />
+
+                    <div className="flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between sm:gap-10">
                         <div>
-                            <span className="uppercase text-[11px] tracking-[0.2em] font-semibold text-foreground/35 block mb-3">
-                                {title}
-                            </span>
-                            <p className="text-muted-foreground text-sm leading-relaxed mb-8">
-                                {description}
+                            <p className="text-[14px] font-semibold text-accent">
+                                Your first cycle
                             </p>
-
-                            <div className="flex items-baseline gap-2 mb-2">
-                                <span className="font-display text-6xl md:text-7xl tracking-tight">${price}</span>
-                                {originalPrice && (
-                                    <span className="text-xl text-muted-foreground line-through">
-                                        ${originalPrice}
-                                    </span>
-                                )}
-                            </div>
-                            <span className="text-sm text-muted-foreground">
-                                {priceLabel}
-                            </span>
-                        </div>
-
-                        <motion.div className="mt-10" variants={fadeUp} custom={0.2}>
-                            <Button
-                                className="w-full bg-foreground text-background hover:bg-foreground/90 rounded-full h-12 text-sm uppercase tracking-[0.1em] font-semibold group"
-                                size="lg"
-                                onClick={onButtonClick}
-                            >
-                                <span className="flex items-center gap-2">
-                                    {buttonText}
-                                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                            <div className="mt-3 flex items-baseline gap-3">
+                                <span className="text-[64px] font-semibold leading-none tracking-[-0.04em] text-foreground sm:text-[80px]">
+                                    $0
                                 </span>
-                            </Button>
-                        </motion.div>
-                    </motion.div>
-
-                    {/* Vertical divider */}
-                    <div className="w-px bg-foreground/[0.06] hidden lg:block" />
-                    <div className="h-px bg-foreground/[0.06] lg:hidden" />
-
-                    {/* Right: Features */}
-                    <motion.div
-                        className="p-8 lg:w-3/5 lg:p-12 bg-foreground/[0.015]"
-                        variants={fadeUp}
-                        custom={0.15}
-                    >
-                        <div className="space-y-8">
-                            {features.map((feature, featureIndex) => (
-                                <div key={featureIndex}>
-                                    <h3 className="text-xs uppercase tracking-[0.2em] font-semibold text-foreground/35 mb-5">
-                                        {feature.title}
-                                    </h3>
-                                    <ul className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                                        {feature.items.map((item, index) => (
-                                            <motion.li
-                                                key={index}
-                                                className="flex items-center gap-3"
-                                                variants={fadeUp}
-                                                custom={0.2 + index * 0.05}
-                                            >
-                                                <div className="size-5 rounded-full border border-foreground/10 flex items-center justify-center flex-shrink-0">
-                                                    <Check className="size-3 text-accent" />
-                                                </div>
-                                                <span className="text-sm text-foreground/70">{item}</span>
-                                            </motion.li>
-                                        ))}
-                                    </ul>
-                                    {featureIndex < features.length - 1 && (
-                                        <div className="h-px bg-foreground/[0.06] mt-8" />
-                                    )}
-                                </div>
-                            ))}
+                                <span className="text-[26px] font-medium leading-none text-foreground/40 line-through decoration-accent/50 decoration-[2px]">
+                                    $199
+                                </span>
+                            </div>
+                            <p className="mt-3 text-[14px] text-foreground/55">
+                                Then $199 per cycle. No card needed to start.
+                            </p>
                         </div>
-                    </motion.div>
+
+                        <Button
+                            asChild
+                            size="lg"
+                            className="group h-12 rounded-full bg-accent px-6 text-[14px] font-semibold text-foreground hover:bg-accent/90"
+                        >
+                            <Link href="/signup">
+                                Start your free cycle
+                                <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
-            </motion.div>
-        </motion.div>
-    );
+
+                <div className="border-t border-foreground/[0.08] bg-foreground/[0.018] px-7 py-8 sm:px-12 sm:py-9">
+                    <p className="mb-5 text-[13px] font-semibold text-foreground/62">
+                        Every cycle includes
+                    </p>
+                    <ul className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
+                        {included.map((item) => (
+                            <li
+                                key={item}
+                                className="flex items-start gap-2.5 text-[14.5px] text-foreground/75"
+                            >
+                                <span className="mt-[5px] inline-flex size-3.5 shrink-0 items-center justify-center rounded-full bg-accent/12 text-accent">
+                                    <Check className="size-2.5" strokeWidth={2.5} />
+                                </span>
+                                <span>{item}</span>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+
+            <p className="mx-auto mt-8 max-w-2xl text-center text-[13.5px] leading-[1.6] text-foreground/55">
+                A cycle is created when an admin starts a new recruitment
+                period (e.g. <span className="text-foreground/70">Fall 2025</span>). Most chapters run 1–2 cycles per year.
+            </p>
+        </div>
+    )
 }

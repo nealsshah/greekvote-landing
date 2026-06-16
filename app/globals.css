@@ -10,43 +10,43 @@
 
 @layer base {
   :root {
-    --font-display: var(--font-instrument-serif);
-    --font-body: var(--font-plus-jakarta);
+    --font-display: var(--font-geist-sans);
+    --font-body: var(--font-geist-sans);
 
-    /* Premium Editorial palette — warm cream + deep violet */
-    --background: 45 25% 97%;
-    --foreground: 220 15% 8%;
-    --card: 45 20% 98%;
-    --card-foreground: 220 15% 8%;
-    --popover: 45 20% 98%;
-    --popover-foreground: 220 15% 8%;
-    --primary: 258 58% 34%;
-    --primary-foreground: 45 25% 97%;
-    --secondary: 45 12% 92%;
-    --secondary-foreground: 220 15% 12%;
-    --muted: 45 10% 93%;
-    --muted-foreground: 220 8% 46%;
-    --accent: 258 72% 52%;
+    /* Cool paper, ink, and a single signal color from the product console. */
+    --background: 210 18% 96%;
+    --foreground: 222 27% 9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 27% 9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 27% 9%;
+    --primary: 222 27% 9%;
+    --primary-foreground: 210 18% 96%;
+    --secondary: 213 17% 90%;
+    --secondary-foreground: 222 24% 13%;
+    --muted: 213 17% 90%;
+    --muted-foreground: 220 10% 31%;
+    --accent: 12 82% 46%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-    --border: 45 12% 87%;
-    --input: 45 12% 87%;
-    --ring: 258 58% 34%;
-    --chart-1: 258 58% 34%;
-    --chart-2: 258 72% 52%;
-    --chart-3: 280 60% 45%;
-    --chart-4: 300 50% 50%;
-    --chart-5: 320 45% 55%;
+    --border: 214 15% 82%;
+    --input: 214 15% 82%;
+    --ring: 12 86% 52%;
+    --chart-1: 12 86% 52%;
+    --chart-2: 222 27% 9%;
+    --chart-3: 205 62% 35%;
+    --chart-4: 152 44% 34%;
+    --chart-5: 42 88% 43%;
     --radius: 0.375rem;
-    --sidebar-background: 45 20% 96%;
-    --sidebar-foreground: 220 15% 8%;
-    --sidebar-primary: 258 58% 34%;
-    --sidebar-primary-foreground: 45 25% 97%;
-    --sidebar-accent: 45 12% 92%;
-    --sidebar-accent-foreground: 220 15% 12%;
-    --sidebar-border: 45 12% 87%;
-    --sidebar-ring: 258 58% 34%;
+    --sidebar-background: 210 18% 96%;
+    --sidebar-foreground: 222 27% 9%;
+    --sidebar-primary: 222 27% 9%;
+    --sidebar-primary-foreground: 210 18% 96%;
+    --sidebar-accent: 213 17% 90%;
+    --sidebar-accent-foreground: 222 24% 13%;
+    --sidebar-border: 214 15% 82%;
+    --sidebar-ring: 12 86% 52%;
   }
 
   .dark {
@@ -90,33 +90,40 @@
     @apply border-border;
   }
 
-  body {
-    @apply bg-background text-foreground antialiased;
+  html {
+    scroll-behavior: smooth;
   }
 
-  /* Grain texture overlay for editorial quality */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 256px 256px;
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: hsl(var(--accent) / 0.18);
+    color: hsl(var(--foreground));
   }
 }
 
 @layer utilities {
-  /* Editorial divider */
-  .editorial-rule {
-    @apply w-full h-px bg-foreground/15;
-  }
-
-  /* Display font utility */
+  /* Display font utility (reserved for large marketing moments). */
   .font-display {
-    font-family: var(--font-display), Georgia, serif;
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-feature-settings: "kern";
   }
 
   /* Body font utility */
@@ -124,8 +131,18 @@
     font-family: var(--font-body), system-ui, sans-serif;
   }
 
-  /* Dramatic heading styles */
-  .heading-editorial {
-    @apply font-display font-normal tracking-tight leading-[0.9];
+  /* Hairline that adapts to surface */
+  .hairline {
+    @apply w-full h-px bg-foreground/[0.08];
+  }
+
+  .hairline-on-dark {
+    @apply w-full h-px bg-background/[0.08];
+  }
+
+  /* Product-shot frame: structured, flat, and inspectable. */
+  .product-frame {
+    background: hsl(var(--card));
+    box-shadow: 0 1px 0 hsl(var(--foreground) / 0.04);
   }
 }

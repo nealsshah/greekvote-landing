@@ -2,471 +2,337 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { motion } from "framer-motion"
-import { Users, Calendar, MessageSquare, BarChart3, ImageIcon, Smartphone, ArrowRight } from "lucide-react"
+import { ArrowRight, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { HeroSection } from "@/components/ui/hero-section-1"
 import { PricingCard } from "@/components/ui/pricing-card"
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (delay: number = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] },
-  }),
-}
-
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="uppercase text-[11px] tracking-[0.25em] font-semibold text-foreground/35 block mb-6">
-      {children}
-    </span>
-  )
-}
-
-function EditorialRule() {
-  return <div className="w-full h-px bg-foreground/10" />
-}
+const faqs = [
+  {
+    question: "How quickly can a chapter get set up?",
+    answer:
+      "Most chapters are running in 30 minutes. Create the org, import candidates (CSV or manual), and you can host a vote before the next chapter meeting. No onboarding call required, but we're happy to do one.",
+  },
+  {
+    question: "What does Bayesian fairness actually mean?",
+    answer:
+      "Some members rate strict; some rate easy. Raw averages punish candidates whose voters happen to be strict. The Bayesian system normalizes for each voter's tendency, so candidates are compared on like terms. The math is public; the result is rankings nobody can argue with.",
+  },
+  {
+    question: "Can we customize rounds, criteria, and thresholds?",
+    answer:
+      "Yes. Define your own rounds (Meet the Brothers, Resume Review, Speed Networking, anything), choose Yes/No or star ratings per round, set discussion thresholds, and adjust voting visibility per round. Your process, not ours.",
+  },
+  {
+    question: "Is candidate data private?",
+    answer:
+      "Encrypted in transit and at rest. Role-based access (admin / member / observer). Anonymous comments stay anonymous; we don't unmask them even for admins. Full export and delete on demand.",
+  },
+  {
+    question: "Does it work on phones during events?",
+    answer:
+      "It's the primary surface. Members vote, comment, and view candidate profiles on phones during events. Swipe through candidates, tap to vote, type to comment.",
+  },
+  {
+    question: "What happens to our data after a cycle?",
+    answer:
+      "It stays. Past cycles remain accessible for reference, you can export everything at any time, and we never delete chapter data unless you ask us to.",
+  },
+  {
+    question: "Does this work for sororities too?",
+    answer:
+      "Yes. The tool is built for any Greek-letter recruitment process — fraternities and sororities, social and professional. The voting, deliberation, and round mechanics are the same across all of them.",
+  },
+]
 
 export default function LandingPage() {
-  const features = [
-    {
-      number: "01",
-      title: "Advanced Voting System",
-      description: "Star ratings, round-based voting, Bayesian fairness algorithms, and live analytics to ensure every candidate gets a fair evaluation.",
-      icon: <BarChart3 className="size-5" />,
-    },
-    {
-      number: "02",
-      title: "Comments & Deliberations",
-      description: "Anonymous or attributed feedback, threaded discussions, likes, and moderation tools for productive conversations.",
-      icon: <MessageSquare className="size-5" />,
-    },
-    {
-      number: "03",
-      title: "Event & Round Management",
-      description: "Automatic round creation, drag-and-drop scheduling, and visual status indicators to keep recruitment on track.",
-      icon: <Calendar className="size-5" />,
-    },
-    {
-      number: "04",
-      title: "Attendance Tracking",
-      description: "Log candidate participation, bulk import via CSV, and generate reports instantly with zero manual work.",
-      icon: <Users className="size-5" />,
-    },
-    {
-      number: "05",
-      title: "Photo Gallery",
-      description: "Secure uploads with gallery view, sorting, and filtering so every member can put a face to a name.",
-      icon: <ImageIcon className="size-5" />,
-    },
-    {
-      number: "06",
-      title: "Mobile-First Experience",
-      description: "Swipe gestures, responsive layouts, and offline support. Vote on the go, right from the event floor.",
-      icon: <Smartphone className="size-5" />,
-    },
-  ]
-
   return (
-    <div className="flex min-h-[100dvh] flex-col font-body">
+    <div className="flex min-h-[100dvh] flex-col font-body text-foreground">
       <HeroSection />
 
       <main className="flex-1">
-        {/* ── Problem Statement ── */}
-        <section className="w-full py-24 md:py-40">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <EditorialRule />
-            <div className="py-20 md:py-32">
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-100px" }}
-                className="max-w-4xl mx-auto text-center"
-              >
-                <motion.h2
-                  variants={fadeUp}
-                  custom={0}
-                  className="font-display text-[clamp(2.25rem,5vw,4rem)] leading-[0.95] tracking-tight mb-8"
-                >
-                  Recruitment shouldn&apos;t{' '}
-                  <span className="italic text-accent">be chaotic.</span>
-                </motion.h2>
-                <motion.p
-                  variants={fadeUp}
-                  custom={0.15}
-                  className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto"
-                >
-                  Spreadsheets, group chats, and last-minute paper ballots lead to confusion, bias, and wasted time.
-                  Active members struggle to stay organized, and candidates don&apos;t always get a fair evaluation. There&apos;s a better way.
-                </motion.p>
-              </motion.div>
-            </div>
-            <EditorialRule />
-          </div>
-        </section>
+        {/* ── Problem section: declarative, asymmetric, no card grid ── */}
+        <section className="relative w-full py-20 sm:py-28 md:py-36">
+          <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
+            <h2 className="max-w-3xl text-balance text-[clamp(1.875rem,4.4vw,3rem)] font-semibold leading-[1.05] tracking-[-0.025em]">
+              The mess usually starts after the first event.
+            </h2>
+            <p className="mt-6 max-w-2xl text-pretty text-[17px] leading-[1.65] text-foreground/65">
+              You know the stack. It works until everyone needs the same
+              answer at the same time:
+            </p>
 
-        {/* ── Features ── */}
-        <section id="features" className="w-full py-24 md:py-40">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="mb-20 md:mb-28"
-            >
-              <motion.div variants={fadeUp} custom={0}>
-                <SectionLabel>Features</SectionLabel>
-              </motion.div>
-              <motion.h2
-                variants={fadeUp}
-                custom={0.1}
-                className="font-display text-[clamp(2.25rem,5vw,4rem)] leading-[0.95] tracking-tight max-w-3xl"
-              >
-                Everything you need for{' '}
-                <span className="italic text-accent">fair recruitment.</span>
-              </motion.h2>
-            </motion.div>
-
-            {/* Editorial feature list */}
-            <div className="space-y-0">
-              {features.map((feature, i) => (
-                <motion.div
-                  key={i}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-50px" }}
-                >
-                  <EditorialRule />
-                  <motion.div
-                    variants={fadeUp}
-                    custom={0}
-                    className="grid md:grid-cols-12 gap-6 md:gap-12 py-10 md:py-14 group cursor-default"
-                  >
-                    {/* Number */}
-                    <div className="md:col-span-1">
-                      <span className="font-display text-3xl md:text-4xl text-foreground/15 group-hover:text-accent/40 transition-colors duration-500">
-                        {feature.number}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <div className="md:col-span-4">
-                      <h3 className="text-xl md:text-2xl font-semibold tracking-tight group-hover:text-accent transition-colors duration-500">
-                        {feature.title}
-                      </h3>
-                    </div>
-
-                    {/* Description */}
-                    <div className="md:col-span-7">
-                      <p className="text-muted-foreground leading-relaxed text-base md:text-lg">
-                        {feature.description}
-                      </p>
-                    </div>
-                  </motion.div>
-                </motion.div>
-              ))}
-              <EditorialRule />
-            </div>
-          </div>
-        </section>
-
-        {/* ── How It Works ── */}
-        <section id="how-it-works" className="w-full py-24 md:py-40 bg-foreground text-background relative overflow-hidden">
-          {/* Subtle grid pattern */}
-          <div className="absolute inset-0 opacity-[0.04]" style={{
-            backgroundImage: 'linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)',
-            backgroundSize: '4rem 4rem',
-          }} />
-
-          <div className="mx-auto max-w-7xl px-6 lg:px-12 relative">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="mb-20 md:mb-28"
-            >
-              <motion.div variants={fadeUp} custom={0}>
-                <span className="uppercase text-[11px] tracking-[0.25em] font-semibold text-background/35 block mb-6">
-                  How It Works
+            <ul className="mt-7 space-y-2.5 text-[17px] leading-[1.5] text-foreground/55 sm:text-[18px]">
+              <li className="flex items-baseline gap-3">
+                <span className="inline-block h-px w-5 translate-y-[-4px] bg-accent" />
+                <span className="line-through decoration-foreground/30">
+                  The Sheet that nobody updates after Tuesday.
                 </span>
-              </motion.div>
-              <motion.h2
-                variants={fadeUp}
-                custom={0.1}
-                className="font-display text-[clamp(2.25rem,5vw,4rem)] leading-[0.95] tracking-tight max-w-3xl"
-              >
-                Simple process,{' '}
-                <span className="italic opacity-60">powerful results.</span>
-              </motion.h2>
-            </motion.div>
+              </li>
+              <li className="flex items-baseline gap-3">
+                <span className="inline-block h-px w-5 translate-y-[-4px] bg-accent" />
+                <span className="line-through decoration-foreground/30">
+                  The group chat with 40 unread.
+                </span>
+              </li>
+              <li className="flex items-baseline gap-3">
+                <span className="inline-block h-px w-5 translate-y-[-4px] bg-accent" />
+                <span className="line-through decoration-foreground/30">
+                  The paper ballots that get lost on the way to delibs.
+                </span>
+              </li>
+            </ul>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+            <p className="mt-9 max-w-2xl text-[17px] leading-[1.6] text-foreground">
+              GreekVote keeps the roster, votes, attendance, comments, and
+              rankings in one place, so the room can argue about candidates
+              instead of whose numbers are current.
+            </p>
+          </div>
+        </section>
+
+        {/* ── Voting feature: the differentiator. Asymmetric two-column with the real product. ── */}
+        <section
+          id="voting"
+          className="relative w-full pt-12 pb-20 sm:py-24 md:py-32"
+        >
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+              <div className="lg:col-span-5">
+                <FeatureLabel>The vote</FeatureLabel>
+                <h2 className="mt-5 text-balance text-[clamp(1.875rem,4vw,2.75rem)] font-semibold leading-[1.05] tracking-[-0.025em]">
+                  Voting that holds up under scrutiny.
+                </h2>
+                <p className="mt-5 text-pretty text-[17px] leading-[1.65] text-foreground/65">
+                  Star ratings or yes/no. Round-based deliberations. Bayesian
+                  normalization for the members who rate strict and the ones
+                  who don&apos;t. So when someone questions the call, the
+                  numbers answer back.
+                </p>
+                <ul className="mt-7 space-y-3 text-[14.5px] text-foreground/75">
+                  <ProofPoint>Star ratings or yes/no, per round</ProofPoint>
+                  <ProofPoint>
+                    Raw <em>and</em> weighted averages, side by side
+                  </ProofPoint>
+                  <ProofPoint>
+                    Live to your chapter, or sealed until delibs
+                  </ProofPoint>
+                  <ProofPoint>
+                    One-click reset if a round needs a re-vote
+                  </ProofPoint>
+                </ul>
+              </div>
+
+              <div className="lg:col-span-7">
+                <ProductFrame
+                  src="/voting.png"
+                  alt="GreekVote voting console — live vote totals with yes / no / total, sealed controls, and result visibility toggle"
+                  width={1600}
+                  height={1100}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Deliberations: reverse the layout. ── */}
+        <section className="relative w-full py-20 sm:py-24 md:py-32">
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+              <div className="order-2 lg:order-1 lg:col-span-7">
+                <ProductFrame
+                  src="/comments.png"
+                  alt="GreekVote deliberations — threaded comments with an explicit Post Anonymously toggle"
+                  width={1600}
+                  height={1100}
+                />
+              </div>
+
+              <div className="order-1 lg:order-2 lg:col-span-5">
+                <FeatureLabel>Delibs</FeatureLabel>
+                <h2 className="mt-5 text-balance text-[clamp(1.875rem,4vw,2.75rem)] font-semibold leading-[1.05] tracking-[-0.025em]">
+                  Anonymous when it matters. Attributed when it counts.
+                </h2>
+                <p className="mt-5 text-pretty text-[17px] leading-[1.65] text-foreground/65">
+                  An explicit anonymous toggle on every comment. Members can
+                  speak honestly when it matters; everything else stays
+                  attributed. Threads, likes, and moderation come with it.
+                </p>
+                <ul className="mt-7 space-y-3 text-[14.5px] text-foreground/75">
+                  <ProofPoint>Per-comment anonymous toggle</ProofPoint>
+                  <ProofPoint>Threaded replies, likes, sorting</ProofPoint>
+                  <ProofPoint>
+                    Admin moderation without unmasking authors
+                  </ProofPoint>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Everything else: a single editorial paragraph, not a card grid ── */}
+        <section className="relative w-full py-20 sm:py-24 md:py-32">
+          <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
+            <div className="grid gap-8 md:grid-cols-[1fr_1.4fr] md:items-start">
+              <h2 className="max-w-3xl text-balance text-[clamp(1.75rem,3.8vw,2.5rem)] font-semibold leading-[1.05] tracking-[-0.025em]">
+                The rest of the cycle stops living in side tabs.
+              </h2>
+
+              <p className="text-pretty text-[17px] leading-[1.65] text-foreground/68">
+                Round and event scheduling, attendance with CSV import and
+                export, a candidate photo gallery for putting faces to names,
+                and a mobile-first interface so voting happens on the event
+                floor, not back at the apartment three days later.
+              </p>
+            </div>
+
+            <div className="mt-12 grid gap-6 lg:grid-cols-5">
+              <div className="lg:col-span-3">
+                <ProductFrame
+                  src="/admin.png"
+                  alt="GreekVote admin overview — current cycle, total PNMs, active round, and live voting status"
+                  width={1600}
+                  height={920}
+                />
+              </div>
+              <div className="lg:col-span-2">
+                <ProductFrame
+                  src="/events.png"
+                  alt="GreekVote event attendance — every event with PNM headcount and quick CSV export"
+                  width={1600}
+                  height={920}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── How it works: numbered (real sequence), on dark — contrast moment ── */}
+        <section
+          id="flow"
+          className="relative w-full overflow-hidden bg-foreground py-24 text-background sm:py-28 md:py-36"
+        >
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-background/15"
+          />
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.035]"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, currentColor 1px, transparent 1px), linear-gradient(to bottom, currentColor 1px, transparent 1px)",
+              backgroundSize: "5rem 5rem",
+            }}
+          />
+
+          <div className="relative mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <div className="grid gap-6 lg:grid-cols-12 lg:items-end">
+              <div className="max-w-2xl lg:col-span-7">
+              <h2 className="text-balance text-[clamp(1.875rem,4.4vw,3rem)] font-semibold leading-[1.05] tracking-[-0.025em]">
+                How a cycle runs.
+              </h2>
+              <p className="mt-5 text-[17px] leading-[1.6] text-background/65">
+                From the first import to the final selection list — four
+                steps, one tool.
+              </p>
+              </div>
+              <p className="border-t border-background/12 pt-5 text-[14px] leading-[1.6] text-background/55 lg:col-span-4 lg:col-start-9">
+                No process theater here. These are the places a recruitment
+                chair actually loses time during rush week.
+              </p>
+            </div>
+
+            <ol className="mt-14 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
               {[
                 {
-                  step: "01",
-                  title: "Add Candidates",
-                  description: "Import PNMs and their info in minutes with bulk upload or manual entry.",
+                  n: "01",
+                  title: "Add candidates",
+                  body: "Import PNMs via CSV or add them by hand. Photos, majors, GPAs, custom fields — whatever your chapter tracks.",
                 },
                 {
-                  step: "02",
-                  title: "Host Events",
-                  description: "Track attendance, upload photos, and collect feedback that flows into profiles.",
+                  n: "02",
+                  title: "Host events",
+                  body: "Schedule rounds, track attendance, upload photos. Everything flows into each candidate's profile automatically.",
                 },
                 {
-                  step: "03",
-                  title: "Vote & Deliberate",
-                  description: "Structured rounds with fair voting algorithms and moderated discussions.",
+                  n: "03",
+                  title: "Vote & deliberate",
+                  body: "Structured rounds, fair scoring, threaded comments. Anonymous when it matters; attributed when it counts.",
                 },
                 {
-                  step: "04",
-                  title: "Decide with Confidence",
-                  description: "Data-driven insights make final selections clear and defensible.",
+                  n: "04",
+                  title: "Decide",
+                  body: "Live rankings, weighted averages, side-by-side breakdowns. Make the call with the numbers in front of you.",
                 },
-              ].map((step, i) => (
-                <motion.div
-                  key={i}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                  className="relative"
-                >
-                  <motion.div
-                    variants={fadeUp}
-                    custom={i * 0.1}
-                    className="space-y-6"
-                  >
-                    <span className="font-display text-6xl md:text-7xl text-background/10 block leading-none">
-                      {step.step}
+              ].map((step) => (
+                <li key={step.n} className="relative">
+                  <div className="flex items-baseline gap-3">
+                    <span className="text-[44px] font-semibold leading-none tracking-[-0.04em] text-background/30">
+                      {step.n}
                     </span>
-                    <div className="w-12 h-px bg-background/20" />
-                    <h3 className="text-xl font-semibold tracking-tight">{step.title}</h3>
-                    <p className="text-background/50 leading-relaxed">{step.description}</p>
-                  </motion.div>
-                </motion.div>
+                    <span className="h-px flex-1 bg-background/10" />
+                  </div>
+                  <h3 className="mt-5 text-[19px] font-semibold tracking-tight text-background">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2.5 text-[14.5px] leading-[1.55] text-background/60">
+                    {step.body}
+                  </p>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </section>
 
-        {/* ── Benefits ── */}
-        <section className="w-full py-24 md:py-40">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              className="mb-20 md:mb-28 text-center"
-            >
-              <motion.div variants={fadeUp} custom={0}>
-                <SectionLabel>Benefits</SectionLabel>
-              </motion.div>
-              <motion.h2
-                variants={fadeUp}
-                custom={0.1}
-                className="font-display text-[clamp(2.25rem,5vw,4rem)] leading-[0.95] tracking-tight mx-auto"
-              >
-                Built for everyone{' '}
-                <span className="italic text-accent">in recruitment.</span>
-              </motion.h2>
-            </motion.div>
+        {/* ── Pricing: single committed slab, no dual card ── */}
+        <section id="pricing" className="relative w-full py-24 sm:py-28 md:py-36">
+          <div className="mx-auto max-w-5xl px-5 sm:px-6 lg:px-8">
+            <PricingCard />
+          </div>
+        </section>
 
-            <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-              {[
-                {
-                  title: "For Administrators",
-                  description: "Save time, reduce bias, and keep recruitment running smoothly with automated workflows and real-time oversight.",
-                  icon: <Users className="size-5" />,
-                },
-                {
-                  title: "For Active Members",
-                  description: "Simple interface to vote, comment, and deliberate fairly. Access everything from your phone during events.",
-                  icon: <MessageSquare className="size-5" />,
-                },
-              ].map((benefit, i) => (
-                <motion.div
-                  key={i}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true }}
-                >
-                  <motion.div
-                    variants={fadeUp}
-                    custom={i * 0.1}
-                    className="h-full border border-foreground/[0.08] rounded-2xl p-10 md:p-14 hover:border-accent/20 hover:bg-accent/[0.02] transition-all duration-500 group"
+        {/* ── FAQ — sticky heading, compact accordion ── */}
+        <section id="faq" className="relative w-full py-24 sm:py-28 md:py-36">
+          <div className="mx-auto max-w-6xl px-5 sm:px-6 lg:px-8">
+            <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+              <div className="lg:col-span-4 lg:sticky lg:top-28 lg:self-start">
+                <h2 className="text-balance text-[clamp(1.875rem,4vw,2.75rem)] font-semibold leading-[1.05] tracking-[-0.025em]">
+                  Questions chapters ask.
+                </h2>
+                <p className="mt-5 text-pretty text-[17px] leading-[1.6] text-foreground/65">
+                  Something missing? Email{" "}
+                  <a
+                    href="mailto:hello@greekvote.com"
+                    className="font-medium text-foreground underline decoration-foreground/30 decoration-1 underline-offset-[5px] transition-colors hover:text-accent hover:decoration-accent/60"
                   >
-                    <div className="size-12 rounded-full border border-foreground/10 flex items-center justify-center text-foreground/40 mb-8 group-hover:border-accent/30 group-hover:text-accent transition-all duration-500">
-                      {benefit.icon}
-                    </div>
-                    <h3 className="font-display text-2xl md:text-3xl tracking-tight mb-4">{benefit.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed text-lg">{benefit.description}</p>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+                    hello@greekvote.com
+                  </a>{" "}
+                  and we&apos;ll answer fast.
+                </p>
+              </div>
 
-        {/* ── Pricing ── */}
-        <section id="pricing" className="w-full py-24 md:py-40">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <EditorialRule />
-            <div className="py-20 md:py-28">
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-100px" }}
-                className="mb-16 md:mb-24 text-center"
-              >
-                <motion.div variants={fadeUp} custom={0}>
-                  <SectionLabel>Pricing</SectionLabel>
-                </motion.div>
-                <motion.h2
-                  variants={fadeUp}
-                  custom={0.1}
-                  className="font-display text-[clamp(2.25rem,5vw,4rem)] leading-[0.95] tracking-tight"
-                >
-                  Simple, <span className="italic text-accent">transparent</span> pricing.
-                </motion.h2>
-                <motion.p
-                  variants={fadeUp}
-                  custom={0.2}
-                  className="text-muted-foreground text-lg mt-6 max-w-xl mx-auto"
-                >
-                  One price. Everything included. No tiers, no hidden fees.
-                </motion.p>
-              </motion.div>
-
-              <PricingCard
-                title="Per Recruitment Cycle"
-                description="Pay only when you recruit. Everything your chapter needs for a successful recruitment season."
-                price={199}
-                priceLabel="per recruitment cycle"
-                features={[
-                  {
-                    title: "What's Included",
-                    items: [
-                      "Unlimited PNMs",
-                      "Unlimited voting members",
-                      "All features included",
-                      "Data persists forever",
-                    ],
-                  },
-                  {
-                    title: "Why Chapters Love It",
-                    items: [
-                      "~$2-4 per brother",
-                      "No feature gating",
-                      "Setup in 30 minutes",
-                      "Full data export",
-                    ],
-                  },
-                ]}
-                buttonText="Start Your Recruitment"
-                onButtonClick={() => console.log("Pricing CTA clicked")}
-              />
-
-              <motion.p
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="text-center text-sm text-muted-foreground mt-10"
-              >
-                A cycle is created when you start a new recruitment period (e.g., &ldquo;Fall 2025&rdquo;). Most chapters run 1-2 cycles per year.
-              </motion.p>
-            </div>
-            <EditorialRule />
-          </div>
-        </section>
-
-        {/* ── FAQ ── */}
-        <section id="faq" className="w-full py-24 md:py-40">
-          <div className="mx-auto max-w-7xl px-6 lg:px-12">
-            <div className="grid lg:grid-cols-12 gap-12 lg:gap-20">
-              {/* Left: heading */}
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-100px" }}
-                className="lg:col-span-4 lg:sticky lg:top-32 lg:self-start"
-              >
-                <motion.div variants={fadeUp} custom={0}>
-                  <SectionLabel>FAQ</SectionLabel>
-                </motion.div>
-                <motion.h2
-                  variants={fadeUp}
-                  custom={0.1}
-                  className="font-display text-[clamp(2rem,4vw,3.25rem)] leading-[0.95] tracking-tight"
-                >
-                  Frequently asked{' '}
-                  <span className="italic text-accent">questions.</span>
-                </motion.h2>
-                <motion.p
-                  variants={fadeUp}
-                  custom={0.2}
-                  className="text-muted-foreground mt-6 leading-relaxed"
-                >
-                  Everything you need to know about GreekVote. Can&apos;t find what you&apos;re looking for? Reach out to our team.
-                </motion.p>
-              </motion.div>
-
-              {/* Right: accordion */}
               <div className="lg:col-span-8">
                 <Accordion type="single" collapsible className="w-full">
-                  {[
-                    {
-                      question: "How quickly can we get started with GreekVote?",
-                      answer: "You can get started immediately! Create your account, import your candidate list (via CSV or manual entry), and you can run your first vote within minutes. Most chapters are fully set up within 30 minutes.",
-                    },
-                    {
-                      question: "How does the Bayesian fairness algorithm work?",
-                      answer: "Our Bayesian rating system adjusts for individual voting patterns to reduce bias. If someone consistently rates higher or lower than others, the system normalizes their votes to ensure fair comparisons across all candidates.",
-                    },
-                    {
-                      question: "Can we customize voting rounds and criteria?",
-                      answer: "You can create custom voting rounds, set different rating criteria, configure voting thresholds, and customize the entire recruitment workflow to match your chapter's specific process.",
-                    },
-                    {
-                      question: "Is our candidate data secure and private?",
-                      answer: "Yes, security is our top priority. All data is encrypted in transit and at rest. We're compliant with data protection regulations, and you have full control over who can access your recruitment data. We never share your information with third parties.",
-                    },
-                    {
-                      question: "Does GreekVote work on mobile devices?",
-                      answer: "Yes! GreekVote is mobile-first with a responsive design that works perfectly on phones and tablets. Brothers can vote, comment, and view candidate profiles during events without needing a laptop.",
-                    },
-                    {
-                      question: "What kind of support do you provide?",
-                      answer: "We provide comprehensive support including setup assistance, training materials, video tutorials, and responsive customer support via email and chat. We're here to ensure your recruitment season runs smoothly.",
-                    },
-                    {
-                      question: "Can we track attendance at recruitment events?",
-                      answer: "Yes! You can log candidate attendance at each event, bulk import attendance via CSV, and generate reports showing participation rates. This data automatically appears on candidate profiles.",
-                    },
-                    {
-                      question: "What happens to our data after recruitment ends?",
-                      answer: "You maintain full control of your data. You can export all candidate information, voting records, and analytics at any time. You can also archive recruitment seasons while keeping the data accessible for future reference.",
-                    },
-                  ].map((faq, i) => (
-                    <motion.div
-                      key={i}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
+                  {faqs.map((faq, i) => (
+                    <AccordionItem
+                      key={faq.question}
+                      value={`faq-${i}`}
+                      className="border-b border-foreground/[0.08]"
                     >
-                      <motion.div variants={fadeUp} custom={i * 0.04}>
-                        <AccordionItem value={`item-${i}`} className="border-b border-foreground/[0.08] py-1">
-                          <AccordionTrigger className="text-left font-semibold hover:no-underline text-[15px] py-5">
-                            {faq.question}
-                          </AccordionTrigger>
-                          <AccordionContent className="text-muted-foreground leading-relaxed pb-6 text-[15px]">
-                            {faq.answer}
-                          </AccordionContent>
-                        </AccordionItem>
-                      </motion.div>
-                    </motion.div>
+                      <AccordionTrigger className="py-5 text-left text-[15.5px] font-semibold tracking-tight hover:no-underline">
+                        {faq.question}
+                      </AccordionTrigger>
+                      <AccordionContent className="pb-6 text-[15px] leading-[1.65] text-foreground/65">
+                        {faq.answer}
+                      </AccordionContent>
+                    </AccordionItem>
                   ))}
                 </Accordion>
               </div>
@@ -474,70 +340,54 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ── CTA ── */}
-        <section className="w-full py-32 md:py-48 bg-foreground text-background relative overflow-hidden">
-          {/* Accent gradient glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-accent/15 rounded-full blur-[120px] pointer-events-none" />
+        {/* ── Closing CTA: direct signal band ── */}
+        <section className="relative isolate w-full overflow-hidden bg-accent py-24 text-foreground sm:py-28 md:py-32">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-foreground/20"
+          />
 
-          <div className="mx-auto max-w-7xl px-6 lg:px-12 relative">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="text-center max-w-4xl mx-auto"
-            >
-              <motion.h2
-                variants={fadeUp}
-                custom={0}
-                className="font-display text-[clamp(2.5rem,6vw,5rem)] leading-[0.9] tracking-tight mb-8"
-              >
-                Ready to transform{' '}
-                <br className="hidden md:block" />
-                your <span className="italic opacity-60">recruitment?</span>
-              </motion.h2>
-              <motion.p
-                variants={fadeUp}
-                custom={0.15}
-                className="text-background/50 text-lg md:text-xl leading-relaxed max-w-xl mx-auto mb-12"
-              >
-                Join fraternities nationwide using GreekVote to run fair, organized recruitment.
-              </motion.p>
-              <motion.div
-                variants={fadeUp}
-                custom={0.3}
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-              >
+          <div className="mx-auto grid max-w-6xl gap-10 px-5 sm:px-6 lg:grid-cols-12 lg:items-end lg:px-8">
+            <h2 className="text-balance text-[clamp(2.25rem,6vw,4.75rem)] font-semibold leading-[1] tracking-[-0.035em] text-foreground lg:col-span-7">
+              Have the cleaner version ready before the next rush meeting.
+            </h2>
+            <div className="lg:col-span-4 lg:col-start-9">
+              <p className="max-w-md text-pretty text-[17px] leading-[1.6] text-foreground/78">
+                Run your first cycle free. Keep it if the chapter actually
+                uses it.
+              </p>
+              <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row lg:flex-col">
                 <Button
                   asChild
                   size="lg"
-                  className="bg-background text-foreground hover:bg-background/90 rounded-full h-14 px-8 text-sm uppercase tracking-[0.1em] font-semibold group"
+                  className="group h-12 rounded-full bg-foreground px-6 text-[14px] font-semibold text-background hover:bg-foreground/90"
                 >
-                  <Link href="#" className="flex items-center gap-2">
-                    Get Started Now
-                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  <Link href="/signup">
+                    Start your free cycle
+                    <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                   </Link>
                 </Button>
                 <Button
                   asChild
                   size="lg"
                   variant="outline"
-                  className="rounded-full h-14 px-8 text-sm uppercase tracking-[0.1em] font-semibold bg-transparent border-background/60 text-background hover:bg-background/15 hover:text-background"
+                  className="h-12 rounded-full border-foreground/25 bg-transparent px-6 text-[14px] font-semibold text-foreground hover:border-foreground/45 hover:bg-foreground/[0.08] hover:text-foreground"
                 >
                   <Link href="https://cal.com/nealsshah/30min">
-                    Book a Demo
+                    Talk through your process
                   </Link>
                 </Button>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           </div>
         </section>
       </main>
 
       {/* ── Footer ── */}
       <footer className="w-full border-t border-foreground/[0.06] bg-background">
-        <div className="mx-auto max-w-7xl px-6 lg:px-12 py-16 md:py-24">
-          <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-12">
-            <div className="lg:col-span-4 space-y-5">
+        <div className="mx-auto max-w-6xl px-5 py-14 sm:px-6 sm:py-16 lg:px-8">
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
+            <div className="lg:col-span-5 space-y-4">
               <Image
                 src="/greekvote black.png"
                 alt="GreekVote"
@@ -545,52 +395,139 @@ export default function LandingPage() {
                 height={32}
                 className="h-7 w-auto"
               />
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
-                Modern recruitment management for professional fraternities. Run fair, organized, and stress-free recruitment.
+              <p className="max-w-sm text-[14px] leading-[1.6] text-foreground/55">
+                Recruitment management for Greek-letter chapters — fraternities
+                and sororities, social and professional. Built by someone who
+                ran rush and got tired of doing it on spreadsheets.
               </p>
             </div>
 
-            <div className="lg:col-span-2 lg:col-start-auto space-y-5">
-              <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground/40">Product</h4>
-              <ul className="space-y-3">
+            <div className="space-y-4 lg:col-span-3">
+              <h4 className="text-[13px] font-semibold text-foreground/55">
+                Product
+              </h4>
+              <ul className="space-y-2.5">
                 {[
-                  { name: "Features", href: "#features" },
-                  { name: "How It Works", href: "#how-it-works" },
+                  { name: "Voting", href: "#voting" },
+                  { name: "How it works", href: "#flow" },
                   { name: "Pricing", href: "#pricing" },
                   { name: "FAQ", href: "#faq" },
                 ].map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">
+                    <Link
+                      href={link.href}
+                      className="inline-flex min-h-11 items-center text-[14px] text-foreground/65 transition-colors hover:text-foreground"
+                    >
                       {link.name}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="lg:col-span-2 lg:col-start-auto space-y-5">
-              <h4 className="text-xs font-semibold uppercase tracking-[0.15em] text-foreground/40">Account</h4>
-              <ul className="space-y-3">
+
+            <div className="space-y-4 lg:col-span-2">
+              <h4 className="text-[13px] font-semibold text-foreground/55">
+                Account
+              </h4>
+              <ul className="space-y-2.5">
                 {[
-                  { name: "Log In", href: "/login" },
-                  { name: "Sign Up", href: "/signup" },
+                  { name: "Log in", href: "/login" },
+                  { name: "Sign up", href: "/signup" },
                 ].map((link) => (
                   <li key={link.name}>
-                    <Link href={link.href} className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-300">
+                    <Link
+                      href={link.href}
+                      className="inline-flex min-h-11 items-center text-[14px] text-foreground/65 transition-colors hover:text-foreground"
+                    >
                       {link.name}
                     </Link>
                   </li>
                 ))}
+              </ul>
+            </div>
+
+            <div className="space-y-4 lg:col-span-2">
+              <h4 className="text-[13px] font-semibold text-foreground/55">
+                Contact
+              </h4>
+              <ul className="space-y-2.5">
+                <li>
+                  <a
+                    href="mailto:hello@greekvote.com"
+                    className="inline-flex min-h-11 items-center text-[14px] text-foreground/65 transition-colors hover:text-foreground"
+                  >
+                    hello@greekvote.com
+                  </a>
+                </li>
+                <li>
+                  <Link
+                    href="https://cal.com/nealsshah/30min"
+                    className="inline-flex min-h-11 items-center text-[14px] text-foreground/65 transition-colors hover:text-foreground"
+                  >
+                    Book a demo
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>
 
-          <div className="border-t border-foreground/[0.06] pt-10 mt-16">
-            <p className="text-xs text-muted-foreground">
-              &copy; {new Date().getFullYear()} GreekVote. All rights reserved.
+          <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-foreground/[0.06] pt-8 sm:flex-row sm:items-center">
+            <p className="text-[12px] text-foreground/50">
+              &copy; {new Date().getFullYear()} GreekVote.
+            </p>
+            <p className="text-[12px] text-foreground/45">
+              Built for chapters, not enterprises.
             </p>
           </div>
         </div>
       </footer>
     </div>
+  )
+}
+
+function FeatureLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="inline-flex items-center gap-2 text-[14px] font-semibold text-accent">
+      <span className="inline-block h-px w-8 bg-accent" />
+      <span>{children}</span>
+    </span>
+  )
+}
+
+function ProductFrame({
+  src,
+  alt,
+  width,
+  height,
+}: {
+  src: string
+  alt: string
+  width: number
+  height: number
+}) {
+  return (
+    <div className="product-frame relative overflow-hidden rounded-xl border border-foreground/[0.1] p-1.5 sm:p-2">
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className="block w-full rounded-[12px] sm:rounded-[16px]"
+        sizes="(min-width: 1024px) 720px, 100vw"
+      />
+    </div>
+  )
+}
+
+function ProofPoint({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2.5">
+      <span className="mt-[7px] inline-flex size-3.5 shrink-0 items-center justify-center rounded-full bg-accent/12 text-accent">
+        <Check className="size-2.5" strokeWidth={2.5} />
+      </span>
+      <span className="text-pretty text-[14.5px] leading-[1.55] text-foreground/75">
+        {children}
+      </span>
+    </li>
   )
 }
